@@ -25,6 +25,7 @@
         h1 {
             color: #fff;
             margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
         }
 
         .fact-card {
@@ -37,18 +38,27 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         #fact-text {
             color: #fff;
             font-size: 1.2rem;
             margin-bottom: 1rem;
+            transition: opacity 0.5s ease;
         }
 
         #fact-category {
             color: #00ff9d;
             font-size: 0.9rem;
             font-weight: bold;
+            transition: opacity 0.5s ease;
         }
 
         #new-fact-btn {
@@ -58,11 +68,34 @@
             border-radius: 25px;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         #new-fact-btn:hover {
             transform: scale(1.05);
+            background-color: #00e88d;
+            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.4);
+        }
+
+        #new-fact-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -79,13 +112,106 @@
     <script>
         const spaceFacts = {
             "spaceFacts": [
-                // Paste the entire space facts JSON data here
                 {
                     "id": 1,
                     "fact": "One day on Venus is longer than one year on Earth. Venus takes 243 Earth days to rotate on its axis.",
                     "category": "Planets"
                 },
-                // ... add all other facts from the JSON data
+                {
+                    "id": 2,
+                    "fact": "The Sun loses about 4 million tons of mass every second due to fusion reactions.",
+                    "category": "Stars"
+                },
+                {
+                    "id": 3,
+                    "fact": "The largest known asteroid is Ceres, with a diameter of about 945 kilometers.",
+                    "category": "Asteroids"
+                },
+                {
+                    "id": 4,
+                    "fact": "The footprints left by Apollo astronauts on the Moon will last for at least 100 million years.",
+                    "category": "Moon"
+                },
+                {
+                    "id": 5,
+                    "fact": "The largest known star, UY Scuti, is so big that it would take 1,700 years for a passenger jet to fly around it.",
+                    "category": "Stars"
+                },
+                {
+                    "id": 6,
+                    "fact": "There are more stars in the universe than grains of sand on all of Earth's beaches.",
+                    "category": "Universe"
+                },
+                {
+                    "id": 7,
+                    "fact": "The Great Red Spot on Jupiter has been raging for at least 400 years.",
+                    "category": "Planets"
+                },
+                {
+                    "id": 8,
+                    "fact": "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth.",
+                    "category": "Physics"
+                },
+                {
+                    "id": 9,
+                    "fact": "The Milky Way galaxy is estimated to contain over 100 billion stars.",
+                    "category": "Galaxies"
+                },
+                {
+                    "id": 10,
+                    "fact": "A black hole's gravitational pull is so strong that even light cannot escape it.",
+                    "category": "Black Holes"
+                },
+                {
+                    "id": 11,
+                    "fact": "Saturn's rings are mostly made up of ice and rock, ranging in size from microscopic to house-sized.",
+                    "category": "Planets"
+                },
+                {
+                    "id": 12,
+                    "fact": "The International Space Station travels at a speed of about 17,500 miles per hour.",
+                    "category": "Space Exploration"
+                },
+                {
+                    "id": 13,
+                    "fact": "There is a planet made largely of diamond, called 55 Cancri e.",
+                    "category": "Exoplanets"
+                },
+                {
+                    "id": 14,
+                    "fact": "The space between galaxies is not completely empty; it contains about one atom per cubic meter.",
+                    "category": "Universe"
+                },
+                {
+                    "id": 15,
+                    "fact": "Neutron stars can spin up to 600 times per second.",
+                    "category": "Stars"
+                },
+                {
+                    "id": 16,
+                    "fact": "The Mars rover 'Curiosity' sings 'Happy Birthday' to itself every year on August 5th.",
+                    "category": "Space Exploration"
+                },
+                {
+                    "id": 17,
+                    "fact": "There is a planet where it rains glass sideways, called HD 189733b.",
+                    "category": "Exoplanets"
+                },
+                {
+                    "id": 18,
+                    "fact": "The first photograph of a black hole was released in 2019, showing M87's supermassive black hole.",
+                    "category": "Black Holes"
+                },
+                {
+                    "id": 19,
+                    "fact": "Mercury and Venus are the only planets in our solar system with no moons.",
+                    "category": "Planets"
+                },
+                {
+                    "id": 20,
+                    "fact": "The universe is estimated to be about 13.8 billion years old.",
+                    "category": "Universe"
+                }
             ]
         };
 
@@ -98,17 +224,19 @@
             const randomIndex = Math.floor(Math.random() * facts.length);
             const fact = facts[randomIndex];
             
-            factText.textContent = fact.fact;
-            factCategory.textContent = fact.category;
-
-            // Add fade effect
             factText.style.opacity = 0;
             factCategory.style.opacity = 0;
+            factText.style.transform = 'translateY(10px)';
+            factCategory.style.transform = 'translateY(10px)';
             
             setTimeout(() => {
+                factText.textContent = fact.fact;
+                fact;
                 factText.style.opacity = 1;
                 factCategory.style.opacity = 1;
-            }, 50);
+                factText.style.transform = 'translateY(0)';
+                factCategory.style.transform = 'translateY(0)';
+            }, 300);
         }
 
         // Initialize with a random fact
