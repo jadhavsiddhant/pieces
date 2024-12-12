@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Facts Explorer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1c1e26, #2d3436);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 2rem;
+        }
+
+        .fact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #fact-text {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        #fact-category {
+            color: #00ff9d;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        #new-fact-btn {
+            background: #00ff9d;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #new-fact-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Space Facts Explorer</h1>
+        <div class="fact-card">
+            <p id="fact-text">Click the button to discover amazing space facts!</p>
+            <span id="fact-category"></span>
+        </div>
+        <button id="new-fact-btn">Generate New Fact</button>
+    </div>
+
+    <script>
+        const spaceFacts = {
+            "spaceFacts": [
+                // Paste the entire space facts JSON data here
+                {
+                    "id": 1,
+                    "fact": "One day on Venus is longer than one year on Earth. Venus takes 243 Earth days to rotate on its axis.",
+                    "category": "Planets"
+                },
+                // ... add all other facts from the JSON data
+            ]
+        };
+
+        const factText = document.getElementById('fact-text');
+        const factCategory = document.getElementById('fact-category');
+        const newFactBtn = document.getElementById('new-fact-btn');
+
+        function getRandomFact() {
+            const facts = spaceFacts.spaceFacts;
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const fact = facts[randomIndex];
+            
+            factText.textContent = fact.fact;
+            factCategory.textContent = fact.category;
+
+            // Add fade effect
+            factText.style.opacity = 0;
+            factCategory.style.opacity = 0;
+            
+            setTimeout(() => {
+                factText.style.opacity = 1;
+                factCategory.style.opacity = 1;
+            }, 50);
+        }
+
+        // Initialize with a random fact
+        getRandomFact();
+
+        // Event listener for button click
+        newFactBtn.addEventListener('click', getRandomFact);
+
+        // Add keyboard support (spacebar or enter)
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space' || event.code === 'Enter') {
+                getRandomFact();
+            }
+        });
+    </script>
+</body>
+</html>
