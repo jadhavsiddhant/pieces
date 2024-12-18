@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Explorer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #0b1026, #2d1b4e, #1a4c6e);
+            font-family: 'Arial', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            animation: twinkle 8s infinite;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 3s ease-in-out infinite;
+            background: linear-gradient(90deg, #fff, #7f7fd5, #86a8e7, #91eae4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 100%;
+            animation: gradient 8s ease infinite;
+        }
+
+        .fact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .fact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .fact-card:hover::before {
+            left: 100%;
+        }
+
+        .fact-card:hover {
+            transform: perspective(1000px) translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        #fact-text {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        #fact-category {
+            color: #91eae4;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.5s ease;
+        }
+
+        #new-fact-btn {
+            background: linear-gradient(45deg, #7f7fd5, #86a8e7, #91eae4);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #new-fact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        #new-fact-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        #new-fact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(127, 127, 213, 0.5);
+        }
+
+        #new-fact-btn:active {
+            transform: translateY(1px);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            #fact-text {
+                font-size: 1.2rem;
+            }
+            
+            .fact-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <h1>✨ Cosmic Explorer</h1>
+        <div class="fact-card">
+            <p id="fact-text">Embark on a journey through the cosmos...</p>
+            <span id="fact-category"></span>
+        </div>
+        <button id="new-fact-btn">Explore Universe</button>
+    </div>
+
+    <script>
+        // Create stars
+        function createStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 8 + 's';
+                stars.appendChild(star);
+            }
+        }
+
+        // Space facts data
+        const spaceFacts = {
+            "spaceFacts": [
+                // Your existing space facts here...
+            ]
+        }; = document.getElementById('fact-text');
+        const factCategory = document.getElementById('fact-category');
+        const newFactBtn = document.getElementById('new-fact-btn');
+
+        function getRandomFact() {
+            const facts = spaceFacts.spaceFacts;
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const fact = facts[randomIndex];
+            
+            factText.style.opacity = 0;
+            factCategory.style.opacity = 0;
+            factText.style.transform = 'translateY(20px)';
+            factCategory.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                factText.textContent = fact.fact;
+                factCategory.textContent = fact.category;
+                factText.style.opacity = 1;
+                factCategory.style.opacity = 1;
+                factText.style.transform = 'translateY(0)';
+                factCategory.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Initialize stars and first fact
+        createStars();
+        getRandomFact();
+
+        // Event listeners
+        newFactBtn.addEventListener('click', getRandomFact);
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space' || event.code === 'Enter') {
+                getRandomFact();
+            }
+        });
+    </script>
+</body>
+</html>
